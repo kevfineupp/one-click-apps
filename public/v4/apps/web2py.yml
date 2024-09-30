@@ -14,7 +14,7 @@ caproverOneClickApp:
             $$cap_appname.$$cap_root_domain after WEB2PY has finished starting.
     displayName: WEB2PY
     isOfficial: false
-    description: An out of the box development environment for PY4WEB
+    description: An out of the box development environment for WEB2PY
     documentation: Based on https://fineupp.com
     variables:
         - id: $$cap_WEB2PY_PASS
@@ -49,7 +49,7 @@ caproverOneClickApp:
           description: Shall Supervisor be started?
         - id: $$cap_USERPASS
           label: SUDO passsword
-          defaultValue: py4web
+          defaultValue: web2py
           description: Shall we have a SUDO password? Otherwise SUDO password is disabled
 services:
     $$cap_appname:
