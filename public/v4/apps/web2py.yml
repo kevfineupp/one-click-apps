@@ -6,24 +6,24 @@ caproverOneClickApp:
             get developers coding and shipping code faster with a flexible Python
             environment deployed and framework pre-installed, OpenVSCode with
             extensions up and running, SSH access and much more out of the box.This
-            One-Click-App is configured to install PY4WEB. The same runtime is used
+            One-Click-App is configured to install WEB2PY. The same runtime is used
             for the Websson Cloud Service of Fineupp. https://fineupp.com '
         end: >
-            PY4WEB is deployed, it might take few moments before it's fully started.
-            Initial PY4WEB password is $$cap_PY4WEB_PASS. Login on
-            $$cap_appname.$$cap_root_domain after PY4WEB has finished starting.
-    displayName: PY4WEB
+            WEB2PY is deployed, it might take few moments before it's fully started.
+            Initial WEB2PY password is $$cap_WEB2PY_PASS. Login on
+            $$cap_appname.$$cap_root_domain after WEB2PY has finished starting.
+    displayName: WEB2PY
     isOfficial: false
     description: An out of the box development environment for PY4WEB
     documentation: Based on https://fineupp.com
     variables:
-        - id: $$cap_PY4WEB_PASS
-          label: PY4WEB PASS
+        - id: $$cap_WEB2PY_PASS
+          label: WEB2PY PASS
           defaultValue: admin
-          description: PY4WEB admin interface password
+          description: WEB2PY admin interface password
         - id: $$cap_VSTOKEN
           label: VSCode Token
-          defaultValue: py4web
+          defaultValue: web2py
           description: Token to trigger install and access OpenVSCode web interface.Leave empty or set to vscode to disable.
         - id: $$cap_VSVERSION
           label: Version of VSCode to install
@@ -57,8 +57,8 @@ services:
         image: fineupp/code-and-ship-on-python:latest
         user: null
         environment:
-            PY4WEB: 'True'
-            PY4WEB_PASS: $$cap_PY4WEB_PASS
+            WEB2PY: 'True'
+            WEB2PY_PASS: $$cap_WEB2PY_PASS
             VSTOKEN: $$cap_VSTOKEN
             JUPTOKEN: $$cap_JUPTOKEN
             ENVNAME: $$cap_appname
