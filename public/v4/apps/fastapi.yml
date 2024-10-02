@@ -1,0 +1,74 @@
+captainVersion: 4
+caproverOneClickApp:
+    instructions:
+        start:
+            'Code-and-Ship-On for Python is an open source Docker based runtime to
+            get developers coding and shipping code faster with a flexible Python
+            environment deployed and framework pre-installed, OpenVSCode with
+            extensions up and running, SSH access and much more out of the box.This
+            One-Click-App is configured to install FASTAPI. The same runtime is used
+            for the Websson Cloud Service of Fineupp. https://fineupp.com '
+        end: >
+            FASTAPI is deployed, it might take few moments before it's fully started.
+            Check out $$cap_appname.$$cap_root_domain after FASTAPI has finished starting.
+    displayName: FASTAPI 
+    isOfficial: false
+    description: An out of the box development environment for PY4WEB
+    documentation: Based on https://fineupp.com
+    variables:
+        - id: $$cap_VSTOKEN
+          label: VSCode Token
+          defaultValue: fastapi
+          description: Token to trigger install and access OpenVSCode web interface.Leave empty or set to vscode to disable.
+        - id: $$cap_VSVERSION
+          label: Version of VSCode to install
+          defaultValue: 1.93.0
+          description: null
+        - id: $$cap_JUPTOKEN
+          label: Jupyterlab Token
+          defaultValue: juptoken
+          description: Token to trigger install and access Jupyterlab web interface.Leave empty or set to juptoken to disable (You need a Caprover Reverse Proxy to port 3001 with websockets enabled)
+        - id: $$cap_SSHKEY
+          label: SSH Keypair
+          defaultValue: 'True'
+          description: Shall Private/Public Key Pair be created for SSH (Key in the logs)
+        - id: $$cap_sshd_port
+          label: SSH Port Mapping
+          defaultValue: 50022
+          description:
+              Which port to open to the outside world so you can SSH into the
+              container?
+        - id: $$cap_SUPERVISOR
+          label: Supervisor Enabled?
+          defaultValue: 'False'
+          description: Shall Supervisor be started?
+        - id: $$cap_USERPASS
+          label: SUDO passsword
+          defaultValue: fastapi
+          description: Shall we have a SUDO password? Otherwise SUDO password is disabled
+services:
+    $$cap_appname:
+        restart: always
+        image: fineupp/code-and-ship-on-python:latest
+        user: null
+        environment:
+            FASTAPI: 'True'
+            VSTOKEN: $$cap_VSTOKEN
+            JUPTOKEN: $$cap_JUPTOKEN
+            ENVNAME: $$cap_appname
+            SSHKEY: $$cap_SSHKEY
+            SUPERVISOR: $$cap_SUPERVISOR
+            VSVERSION: $$cap_VSVERSION
+            USERPASS: $$cap_USERPASS
+        ports:
+            - $$cap_sshd_port:22
+        volumes:
+            - $$cap_appname-home-persistance:/home/websson
+        caproverExtra:
+            containerHttpPort: '80'
+    $$cap_appname-vscode-rp:
+        image: caprover/nginx-reverse-proxy:1-ef5ffcb
+        restart: always
+        environment:
+            UPSTREAM_HTTP_ADDRESS: http://srv-captain--$$cap_appname:3000
+            CLIENT_MAX_BODY_SIZE: 256M
